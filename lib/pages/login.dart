@@ -21,6 +21,12 @@ class _LoginpageState extends State<Loginpage> {
   TextEditingController passwordController = new TextEditingController();
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
@@ -48,7 +54,7 @@ class _LoginpageState extends State<Loginpage> {
                 margin: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height / 3),
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 2,
+                height: MediaQuery.of(context).size.height,
                 decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -149,7 +155,7 @@ class _LoginpageState extends State<Loginpage> {
                                       borderRadius: BorderRadius.circular(20)),
                                   child: Center(
                                     child: Text(
-                                      'SIGN UP',
+                                      'LOGIN IN',
                                       style: TextStyle(
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.bold,
@@ -197,6 +203,10 @@ class _LoginpageState extends State<Loginpage> {
 
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => BottomNavState()));
+    } else if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.orangeAccent,
+          content: Center(child: Text("No Account Founded"))));
     }
   }
 }

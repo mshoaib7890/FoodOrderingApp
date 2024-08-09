@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/Widgets/widget_support_style.dart';
 import 'package:food_delivery_app/pages/bottomNavBar.dart';
 import 'package:food_delivery_app/pages/login.dart';
+import 'package:food_delivery_app/services/database.dart';
+import 'package:food_delivery_app/services/shared_pref.dart';
+import 'package:random_string/random_string.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -31,6 +34,20 @@ class _SignupState extends State<Signup> {
             backgroundColor: Colors.red,
             content: Text("Registered Sucessfully",
                 style: TextStyle(fontSize: 20.0))));
+
+        ///using Firebase storage to store Data of the User
+        String Id = randomAlphaNumeric(10);
+        Map<String, dynamic> addUserInfo = {
+          "Name": nameController.text,
+          "Email": emailController.text,
+          "Wallet": '0',
+          "id": Id,
+        };
+        await DatabaseMethods().addUserDetails(addUserInfo, Id);
+        await SharedPreferenceHelper().saveUserId(Id);
+        await SharedPreferenceHelper().saveUserName(nameController.text);
+        await SharedPreferenceHelper().saveUserEmail(emailController.text);
+        await SharedPreferenceHelper().saveUserWallet('0');
 
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => BottomNavState()));
@@ -74,7 +91,7 @@ class _SignupState extends State<Signup> {
                 margin: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height / 3),
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 2,
+                height: MediaQuery.of(context).size.height,
                 decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -98,7 +115,7 @@ class _SignupState extends State<Signup> {
                     ),
                     Material(
                       borderRadius: BorderRadius.circular(20),
-                      elevation: 5.0,
+                      elevation: 6.0,
                       child: Container(
                         padding: EdgeInsets.only(right: 20, left: 20),
                         width: MediaQuery.of(context).size.width,
